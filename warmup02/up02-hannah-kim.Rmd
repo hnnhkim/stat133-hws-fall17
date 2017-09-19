@@ -1,0 +1,48 @@
+---
+title: "Warm Up 2"
+output: github_document
+---
+
+```{r}
+# load the objects
+load("nba2017-salary-points.RData")
+# list the available objects
+ls()
+```
+```{r}
+class(points)
+class(salary)
+class(team)
+```
+```{r}
+# quick summary of statistics
+summary(points)
+summary(salary)
+summary(team)
+summary(experience)
+summary(position)
+summary(player)
+```
+```{r}
+# statistics for salary
+salary_mean <- mean(salary)
+salary_mean
+salary_sd <- sd(salary)
+salary_sd
+salary_min <- min(salary)
+salary_min
+salary_max <- max(salary)
+salary_max
+salary_median <- median(salary)
+salary_median
+```
+```{r}
+hist(salary)
+boxplot(salary)
+```
+```{r}
+chosen_categorical <- factor(position)
+table(chosen_categorical)
+prop.table(table(team))
+barplot(table(team))
+```
