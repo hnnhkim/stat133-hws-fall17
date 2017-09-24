@@ -1,0 +1,191 @@
+---
+title: "HW01 - More Vectors"
+output: github_document
+---
+###### *Stat 133, Fall 2017, Prof. Sanchez*  
+#### Hannah Kim, Lab Section 104
+
+### Data
+```{r}
+#importing the NBA salary & points data
+load("data/nba2017-salary-points.RData")
+ls()
+```
+## **Research Question: The more points a player scores, the higher his salary?**
+### 1. A Bit of Data Preprocessing
+
+Purpose: creating new variables for salaries in millions, years of experience, and positions
+```{r}
+#new salary variable in millions (2 decimal digits)
+salary_millions <- round(salary/1000000, digits = 2)
+salary_millions
+#new experience variable as an integer vector & replaced R with 0
+experience_new <- as.integer(replace(experience, experience == "R", "0"))
+experience_new
+#new position variable with descriptive labels
+position_factor <- replace(position, position == "C", 'center')
+position_factor <- replace(position_factor, position_factor == "SF", 'small_fwd')
+position_factor <- replace(position_factor, position_factor == "PF", 'power_fwd')
+position_factor <- replace(position_factor, position_factor == "SG", 'shoot_guard')
+position_factor <- replace(position_factor, position_factor == "PG", 'point_guard')
+position_factor = factor(position_factor)
+position_factor
+#table position factor showing frequencies
+table(position_factor)
+```
+### 2. Scatterplot of Points and Salary
+
+Purpose: explore graphical parameters and graph scatterplot of points and salaries
+```{r}
+#scatterplot of points and salary
+plot(points, salary_millions, col = "BLUE", xlab = "Points", ylab = "Salary (in millions)", main = "Scatterplot of Points and Salary", pch = 21, cex = 1.5)
+```
+
+Description of Scatterplot: Overall, the scatterplot is heteroscedastic and seems to have a weak positive correlation because the trend of the data points are unequal across the graph. Most of the data points are concentrated in the lower left of the graph, specifically where salaries are between 0 and 10 million dollars and points are between 0 and 750 points. With several outliers, the data points in the scatterplot display that those who score lower points have lower salaries and those who score higher points have higher salaries.
+
+### 3. Correlation between Points and Salary
+
+Purpose: study the relationship between points and salaries by calculating their correlation
+```{r}
+#assigning points and salaries to variables x & y
+x = points
+y = salary_millions
+#number of individuals
+n <- length(salary_millions)
+n
+#mean of points
+xmean <- sum(points)/n
+xmean
+#mean of salaries
+ymean <- sum(salary_millions)/n
+ymean
+#variance of points
+xvar <- (1/(n-1))*sum((x-xmean)^2)
+xvar
+#variances of salaries
+yvar <- (1/(n-1))*sum((y-ymean)^2)
+yvar
+#standard deviation of points
+sdX <- sqrt(xvar)
+sdX
+#standard deviation of salaries
+sdY <- sqrt(yvar)
+sdY
+#covariance between x & y
+covXY <- (1/(n-1)) * sum((x - xmean)*(y - ymean))
+covXY
+#correlation between x & y
+corXY <- covXY / ((sdX)*(sdY))
+corXY
+```
+### 4. Simple Linear Regression
+
+Purpose: to compute a linear regression equation and predict the salary of a player in terms of scored points
+```{r}
+#b1: slope term
+slope_b1 <- corXY * (sdY/sdX)
+slope_b1
+#b0: intercept term
+intercept_b0 <- ymean - (slope_b1*xmean)
+intercept_b0
+#y-hat: the vector of predicted values
+y_hat <- intercept_b0 + (slope_b1*x)
+y_hat
+```
+
+```{r}
+#summary statistics of y-hat
+summary(y_hat)
+```
+
+Questions:\
+1. See above for summary statistics of y-hat (vector of predicted values)\
+2. Regression equation in inline code: `y_hat = intercept_b0 + (slope_b1*x)`\
+3. 'slope_b1' is the predicted salary increase per point scored for each player\
+4. 'intercept_b0' is the predicted salary per player when a player scores 0 points (constant intercept value)\
+5. Predicted salaries for a player that scores 0, 100, 500, 1000, and 2000 points are below:
+```{r}
+#predicted salaries for a player that scores 0, 100, 500, 1000, and 2000 points
+scores <- c(0, 100, 500, 1000, 2000)
+predicted_salaries <- intercept_b0 + (slope_b1*scores)
+predicted_salaries
+```
+### 5. Plotting the Regression Line
+Purpose: include the regression line and lowess line in the scatterplot
+```{r}
+#scatterplot with regression and lowess lines
+plot(points, salary_millions, col = "BLACK", xlab = "Points", ylab = "Salary (in millions)", main = "Regression and Lowess Lines", pch = 1, cex = 1.2)
+abline(intercept_b0, slope_b1, col = "BLUE", lwd = 3)
+lines(lowess(points, salary_millions), col="RED", lwd = 3)
+text(x = c(2450, 2440), y = c(19, 30), labels = c("regression", "lowess"), col = c("BLUE", "RED"))
+```
+
+### 6. Regression Residuals and Coefficient of Determination $R^2$
+Purpose: to compare predicted values against the observed values based on residuals
+```{r}
+#Residuals: difference between observed and predicted values
+residuals <- y - y_hat
+summary(residuals)
+#Residual Sum of Squares (RSS)
+RSS <- sum(residuals^2)
+RSS
+#Total Sum of Squares (TSS)
+TSS <- sum((y - ymean)^2)
+TSS
+#Coefficient of Determination R2
+R2 <- 1 - (RSS/TSS)
+R2
+```
+### 7. Exploring Position and Experience
+Purpose: to consider the relation of points and salary according to years of experience in the NBA and position
+```{r}
+#scatterplot with years of experience vs salary (in millions) with lowess smooth line
+plot(experience_new, salary_millions, col = "BLACK", xlab = "Years of Experience", ylab = "Salary (in millions)", main = "Scatterplot with Lowess Smooth", pch = 1)
+lines(lowess(experience_new, salary_millions), col="RED", lwd = 3)
+```
+
+**Scatterplot with Lowess Smooth Line:**\
+A majority of the data points are clustered in the lower left area of the graph, specifically in the region where salaries are between 0 and 6 million dollars and years of experience in the NBA are between 0 and 4 years. The lowess smooth line peaks where years of experience is at 6-7 years, indicating that players who played this long in the NBA have salaries in the 8-10 million range. Salaries were relatively stable in the beginning stages for NBA players, but the relation between years of experience and salaries don't seem to matter that much after 9 years of experience, on average. This perhaps tells us that after a certain number of years in the NBA, it's a matter of how much popularity the player established during his earlier stages in the NBA.
+```{r}
+#3D scatterplot of points, experience, and salary
+library(scatterplot3d)
+scatterplot3d(points, experience_new, salary_millions, xlab = "points", ylab = "experience", zlab = "salary", main = "3D Scatterplot")
+```
+
+**3D Scatterplot:**\
+There is a positive correlation between salarries, experience, and points and the graph is heteroscedastic overall. Most of the players seem to score points in the 0-600 range, years of experience in the 0-7 range, and salaries in the 0-7 million dollars range. Because the 3D scatterplot shows an overall positive relation, this indicates that players who score more points tend to have higher salaries during the first few years of their NBA careers. Players with more experience seem to score more points over time as a whole. However, after 10 years of experience, salary amounts seem to differ because the data points are more scattered across the graph.
+
+> **From the scatterplots, does experience seem to be related with salary?** Experience seems to have a positive relation with salary during the first 6-8 years of a NBA player's career. However, since the data points are scattered after the first several years, experience and salary don't seem to have a strong correlation once players have been in the NBA for a good amount of time. 
+
+```{r}
+#Boxplot
+boxplot(salary_millions~position_factor, position_factor, xlab = "Position", ylab = "Salary (in millions)", main = "Boxplot")
+```
+
+**Boxplot:**\
+The interquartile range for all of the positions are relatively similar, and the salary means (thick black line) seem to be approximately the same (around 4 million) across all of the positions. There are no outliers for players that play the center position, but there are distinctive outliers for the other positions. The point guard position has the smallest range, while the center position has a largest range, which means that point guards tend to earn the least on average and center players earn the most on average. Overall, most players, regardless of position, earn salaries between 1 and 9 million dollars as a whole.   
+
+
+> **From the boxplot, does position seem to be related with salary?** Yes, positions do seem to be related with salary because center players have a higher salary on average than those who play other positions. Especially because there are no outliers for the center position, that means that most center players lie within the interquartile range. Although the median of salaries are similar across all positions, that could be because the outliers in the point guard, power forward, shoot guard, and small foward positions are raising the salary averages. 
+
+### 8. Comments and Reflections
+1. **What things were hard, even though you saw them in class?** The most challenging component was figuring out how to plot the scatterplots when we tried to incorporate lwd and the text function. It took a while to figure out the text function since I wasn't sure how the syntax worked for that specific function.
+
+2. **What was easy(-ish) even though we haven't done it in class?** Creating the variables was relatively easy when we created the mean, variances, covariances, correlation, and standard deviations. The guidelines to create those variables were straightforward in the directions, and I found it less difficult because it was like applying mathematical expressions that I learned from class onto a computer.
+
+3. **If this was the first time you were using git, how do you feel about it?** It's my first time using git, and I personally feel like the commands and syntax that are used in git (with bash) are not too hard to follow. Git is convenient, and it wasn't difficult to learn it as a first-time user.
+
+4. **If this was the first time using GitHub, how do you feel about it?** A lot of my computer science friends use GitHub to share their code and projects online, and I thought it's a nice way to display your work with others. It's really nice to have a platform where you can store your code.
+
+5. **Did you need help to complete the assignment? If so, what kind of help? Who helped you?** Yes, I did need help to complete the assignment. I needed help on how to incorporate certain functions, which I found my answers by doing Google searches on my questions. 
+
+6. **How much time did it take to complete this HW?** This homework took me approximately 3 hours.
+
+7. **What was the most time consuming part?** The most time consuming part was when I was trying to figure out how to implement the text function in my scatterplot for points versus salaries. Creating the box plot also took a while since I was not familiar with the box plot syntax.
+
+8. **Was there anything that you did not understand? or fully grasped?** I understood most of the lab, but I definitely want more practice and further grasp how to graph compelling scatterplots (such as creating appealing data visualizations and more vivid, colorful details).
+
+9. **Was there anything frustrating in particular?** There wasn't much that was frustrating during the lab because the steps made sense after reading up on a few guides on Google and from past labs and warm-up assignments.
+
+10. **Was there anything exciting? Something that you feel proud of? (Don't be shy, we won't tell anyone).** It was really exciting when I was finally able to add color and proper labels to my scatterplots. The 3D scatterplot was especially the highlight of the lab since I didn't know I could generate these different types of scatterplots in R.
+
