@@ -190,6 +190,4 @@ The interquartile range for all of the positions are relatively similar, and the
 10. **Was there anything exciting? Something that you feel proud of? (Don't be shy, we won't tell anyone).** It was really exciting when I was finally able to add color and proper labels to my scatterplots. The 3D scatterplot was especially the highlight of the lab since I didn't know I could generate these different types of scatterplots in R.
 
 Sources:  
-Piazza  
-http://www.statmethods.net/advgraphs/parameters.html  
-http://www.statmethods.net/graphs/boxplot.html
+Piazza, http://www.statmethods.net/advgraphs/parameters.html, http://www.statmethods.net/graphs/boxplot.html
