@@ -9,6 +9,7 @@ Modify the content of this file.
 - Links to any resources that you used to complete the HW:
 
 	http://www.statmethods.net/advgraphs/parameters.html
+
 	http://www.statmethods.net/graphs/boxplot.html
 - List of references that you used to complete the HW:
 
