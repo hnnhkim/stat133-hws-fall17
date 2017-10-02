@@ -12,7 +12,7 @@ output: github_document
 ### 1. Create a data dictionary
 Purpose: To provide a comprehensive description of what the data is portraying about the individual NBA players
 
-See file *'nba2017-player-statistics-dictionary.md'* for data dictionary
+See file *'nba2017-player-statistics-dictionary.md'* in 'data' folder for data dictionary
 
 ### 2. Importing Data
 Purpose: To practice importing data tables in R
