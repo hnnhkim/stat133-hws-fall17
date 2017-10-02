@@ -1,6 +1,7 @@
 # NBA 2017 Player Statistics Data Dictionary
 
-###Description: 
+### Description: 
+
 The nba2017-player-statistics.csv file contains specific data on individual NBA players who are on the 2016-2017 roster for their specific teams. The player's years of experience, salary, rank, age, and other statistics from games played are recorded. Excluding the first label row, the data has **441 rows** and **24 columns** containing individual player statistics. 
 
 1. Column labels: Player, Team, Position, Experience, Salary, Rank, Age, GP, GS, MIN, FGM, FGA, Points3, Points3_atts, Points2, Points2_atts, FTM, FTA, OREB, DREB, AST, STL, BLK, and TO
