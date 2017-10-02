@@ -1,0 +1,136 @@
+---
+title: "HW02 - Basics of Data Frames"
+subtitle: "Stat 133, Fall 2017"
+author: "Created by Hannah Kim"
+output: github_document
+---
+
+## Research Question 
+##### The more points a player scores, the higher his salary?
+###### Goal: To expand the scope of the analysis by taking into account the overall performance of a player by looking at common individual statistics
+
+### 1. Create a data dictionary
+Purpose: To provide a comprehensive description of what the data is portraying about the individual NBA players
+
+See file *'nba2017-player-statistics-dictionary.md'* for data dictionary
+
+### 2. Importing Data
+Purpose: To practice importing data tables in R
+```{r}
+#importing data with read.csv() / importing style: base
+dat1 <- read.csv('./data/nba2017-player-statistics.csv', colClasses = c("character", "character", "factor", "character", "double", rep("integer", 19)))
+str(dat1)
+```
+```{r}
+#importing data with read_csv() / importing style: readr
+library(readr)
+dat2 <- read_csv('./data/nba2017-player-statistics.csv', col_types = cols(Player = col_character(), Team = col_character(), Position = col_factor(c('C', 'PF', 'PG', 'SF', 'SG')), Experience = col_character(), Salary = col_double()))
+str(dat2)
+```
+
+### 3. Right After Importing the Data
+Purpose: To preprocess the 'Experience' column by replacing R with 0 and convert 'Experience' into integers
+```{r}
+#replacing "R" with 0, then converting entire column into integers
+ExperienceInt <- as.integer(replace(dat1$Experience, dat1$Experience == "R", "0"))
+ExperienceInt
+```
+
+### 4. Performance of Players
+Purpose: To consider basic individual statistics commonly used in the NBA in order to get a proxy of a player’s performance by computing the EFF (Efficiency statistic)
+```{r}
+#computing PTS, REB, Missed FG, Missed FT (parts of the EFF equation that are not already in the NBA 2017 data)
+PTS = ((dat1$FGM - dat1$Points2 - dat1$Points3) + dat1$FTM) + 2*dat1$Points2 + 3*dat1$Points3
+REB = dat1$OREB + dat1$DREB
+Missed_FG = dat1$FGA - dat1$FGM
+Missed_FT = dat1$FTA - dat1$FTM
+
+#adding EFF to the data frame
+dat1$EFF = c((PTS + REB + dat1$AST + dat1$STL + dat1$BLK - Missed_FG - Missed_FT - dat1$TO) / dat1$GP)
+
+summary(dat1$EFF)
+
+#histogram of efficiency statistics
+hist(x = dat1$EFF, main = "Histogram of Efficiency (EFF)", xlab = "EFF", ylab = "Frequency", col = "grey", las = 1)
+```
+```{r}
+library(dplyr)
+#player name, team, salary, and EFF value of the top-10 players by EFF in decreasing order
+select(slice(arrange(dat1, desc(EFF)), 1:10), Player, Team, Salary, EFF)
+
+#name(s) of the player(s) that have a negative EFF
+select(filter(dat1, EFF < 0), Player, EFF)
+
+#correlation coefficients between EFF and all the variables used in the EFF formula
+corPTS = cor(PTS, dat1$EFF)
+corREB = cor(REB, dat1$EFF)
+corAST = cor(dat1$AST, dat1$EFF)
+corSTL = cor(dat1$STL, dat1$EFF)
+corBLK = cor(dat1$BLK, dat1$EFF)
+corMFG = cor(-Missed_FG, dat1$EFF)
+corMFT = cor(-Missed_FT, dat1$EFF)
+corTO = cor(-dat1$TO, dat1$EFF)
+
+#computed correlations in descending order in vector form
+barplot_cor <- (c(PTS = corPTS, REB = corREB, STL = corSTL, AST = corAST, BLK = corBLK, Missed_FT = corMFT, Missed_FG = corMFG, TO = corTO))
+barplot_cor
+
+#barchart with the correlations (bars in decreasing order)
+pos = barplot_cor >= 0
+cols = c("dark orange", "grey")
+barplot(sort(barplot_cor, decreasing = TRUE), ylim = c(-1, 1), cex.names = 0.65, main = "Correlations between Player Stats and EFF", las = 1, col = cols[pos + 1], border = NA)
+abline(h = 0)
+```
+
+### 5. Efficiency and Salary
+Purpose: To produce a scatterplot between Efficiency (x-axis) and Salary (y-axis), including a *loess* smooth line (locally weighted scatterplot smoothing)
+
+#### Comparing EFF and Salaries Amongst ALL Players
+```{r}
+#scatterplot between EFF and salary with loess smooth line
+plot(dat1$EFF, dat1$Salary, col = "black", xlab = "EFF", ylab = "Salary", main = "Scatterplot of Points and Salary", pch = 21, cex = 1)
+lines(lowess(dat1$EFF, dat1$Salary), col="RED", lwd = 3)
+
+#correlation coefficient between EFF and salary
+corSalary = cor(dat1$EFF, dat1$Salary)
+corSalary
+```
+
+> The Scatterplot of Points and Salary has a positive correlation overall with most of the data points cluttered between 0 and 10 EFF and 0 to 7 million salary. The data trends aren't equal across the graphs, which indicates that there is a significant greater number of players who have a lower EFF statistic (performance), resulting in lower salaries for the most part. Those with a higher EFF statistics seem to earn more on average.
+
+#### Comparing EFF and Salaries Amongst Players with 20+ Minutes Playing Time
+```{r}
+#players who played more than 20 minutes per game
+library(dplyr)
+MPG = dat1$MIN/dat1$GP
+select(filter(dat1, MPG >= 20), Player)
+
+#data frame 'players2' with players who played more than 20 minutes per game
+players2 <- data.frame(select(filter(dat1, MPG >= 20), Player, EFF, Salary))
+
+#scatterplot between Efficiency and Salary, including a lowess smooth line for 'players2' data frame
+plot(players2$EFF, players2$Salary, col = "black", xlab = "EFF", ylab = "Salary", main = "Points and Salary of Players with 20+ Minutes of Playing Time", pch = 21, cex = 1)
+lines(lowess(players2$EFF, players2$Salary), col = "RED", lwd = 3)
+
+#linear correlation coefficient between EFF and Salary for 'players2'
+cor(players2$EFF, players2$Salary)
+```
+
+> The scatterplot showing only players with more than 20 minutes of playing time is different from the scatterplot comparing across all players because the data points are more spread out for the second graph. Although there are still a greater number of points near the 5-15 EFF range, the points are a lot more spread out compared to the first scatterplot. The loess line is also less steep, which indicates that the span for the data points are less varied. 
+
+### 6. Comments and Reflections
+1. **What things were hard, even though you saw them in class/lab?** It took me a while to figure out how to implement the 'players2' data frame and graph points only from players2 because I'm still practicing importing data from an already existing data frame.
+
+2. **What was easy(-ish) even though we haven’t done it in class/lab?** In the previous homework, we had to manually compute the correlation coefficients ourselves, so it was easier for this homework when we could simply use the cor() function to compute the correlation coefficients for the statistics that make up EFF.
+
+3. **Did you need help to complete the assignment? If so, what kind of help?** I needed help with colClasses and col_types, which I read up on the two resources given to us on the work. I also wanted to make my graphs aesthetically pleasing, so I had to do a Google search to learn how to change the colors for different bars of the graph.
+
+4. **How much time did it take to complete this HW?** It took me approximately 7 hours.
+
+5. **What was the most time consuming part?** The most time consuming part was when I had to compute the EFF by creating PTS, REB, Missed_FG, and Missed_FT. I didn't consider the weights of the points at first, so I was having different summary statistics, but I figured out that I had to consider the 2 pointers and 3 pointers since my original code read everything as 1 pointers. 
+
+6. **Was there anything that you did not understand? or fully grasped?** I am still not 100% sure why my scatterplot for players2 data does not work if my 'players2' data frame code does not include 'Player, EFF, Salary' at the end. For instance, if I do 'players2 <- data.frame(select(filter(dat1, MPG >= 20)))' the scatterplot does not work, but if I keep my code as 'players2 <- data.frame(select(filter(dat1, MPG >= 20), Player, EFF, Salary))' then it works. I'm still trying to fully grasp why that is the case.
+
+7. **Was there anything frustrating in particular?** There wasn't anything extremely frustrating in particular because my outputs eventually seemed to align with expectations in the end.
+
+8. **Was there anything exciting? Something that you feel proud of? (Don’t be shy, we won’t tell anyone).** I am proud of my barchart with correlations because I think it aesthetically looks nice! I'm also proud of correctly computing the EFF statistics, generating the correct summary statistics. 
