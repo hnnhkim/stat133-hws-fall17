@@ -8,13 +8,10 @@ The nba2017-player-statistics.csv file contains specific data on individual NBA 
 
   The following are the full descriptions of labels with corresponding units of measurements:
   
-    • Player: first and last names of player  
-
-    • Team: 3-letter team abbreviation
-
-    • Position: player’s position
-
-    • Experience: years of experience in NBA (a value of R means rookie) / Units: Years
+   > • Player: first and last names of player  
+   > • Team: 3-letter team abbreviation
+   > • Position: player’s position
+   > • Experience: years of experience in NBA (a value of R means rookie) / Units: Years
 
     • Salary: player salary in dollars / Units: $
 
@@ -55,7 +52,7 @@ The nba2017-player-statistics.csv file contains specific data on individual NBA 
     • BLK: Blocks
 
     • TO: Turnovers
-    
+
 
 Main source: https://www.basketball-reference.com
 
