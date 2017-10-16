@@ -16,7 +16,7 @@ The 'nba2017-roster.csv' file contains specific data on individual NBA players w
    > • Weight: player's weight in pounds\
    > • Age: Age of Player at the start of February 1st of that season (years)\
    > • Experience: number of years in the NBA\
-   > • Salary: player salary in dollars\
+   > • Salary: player salary in dollars
 
 Main source: https://www.basketball-reference.com
 

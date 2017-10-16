@@ -30,7 +30,7 @@ The 'nba2017-stats.csv' file contains specific stats on individual NBA players w
    > • steals: number of steals the player made\
    > • blocks: number of blocks the player made\
    > • turnovers: number of turnovers the player made\
-   > • fouls: number of fouls the player made\
+   > • fouls: number of fouls the player made
 
 Main source: https://www.basketball-reference.com
 
