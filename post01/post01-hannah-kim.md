@@ -316,4 +316,4 @@ References
 
 \[8\] <http://uc-r.github.io/lollipop>
 
-\[9\] <http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html#Seasonal%20Plot>
+\[9\] <http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html#8.%20Spatial>
