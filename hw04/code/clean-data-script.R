@@ -1,6 +1,7 @@
 # ==================================================================
 # Title: Cleaning Data for Data Preparation
-# Description: This script cleans the data and adds some more values
+# Description: This script cleans the data and adds additional values
+#              that scale the raw scales (0 to 100) 
 # Input: csv files
 # Output: cleaned csv files and summary files
 # ==================================================================

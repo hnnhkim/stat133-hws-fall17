@@ -6,7 +6,7 @@ library(shiny)
 runGitHub("stat133-hws-fall17", "hnnhkim", subdir = "hw04/app")
 
 
-7) Comments and Reflections
+# 7) Comments and Reflections
 Reflect on what was hard/easy, problems you solved, helpful tutorials you read, etc.
 • Was this your first time writing unit tests?
 > Yes, this was my first time writing unit tests.
