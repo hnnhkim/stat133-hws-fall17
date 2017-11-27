@@ -1,7 +1,9 @@
-
-The downloaded binary packages are in
-	/var/folders/rg/qk3r35_d4mdf2m4nbtctnff40000gn/T//RtmpTHPeuM/downloaded_packages
-
+ minimum  : 0.0000
+ percent10: 80.0000
+ quartile1: 100.0000
+ median   : 100.0000
+ mean     : 93.5329
+ quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
  range    : 100.0000

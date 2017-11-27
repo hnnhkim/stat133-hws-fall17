@@ -1,0 +1,20 @@
+Tests for remove_missing: 
+Tests for get_minimum: 
+Tests for get_maximum: 
+Tests for get_range: 
+Tests for get_median: 
+Tests for get_average: 
+Tests for get_stdev: 
+Tests for get_quartile1: 
+Tests for get_quartile3: 
+Tests for count_missing: 
+Tests for summary_stats: 
+Tests for rescale100: 
+Tests for drop_lowest: ....
+Tests for score_homework: 
+Tests for score_quiz: 
+Tests for score_lab: 
+Tests for get_percentile10: 
+Tests for get_percentile90: 
+
+DONE ===============================================================================================================

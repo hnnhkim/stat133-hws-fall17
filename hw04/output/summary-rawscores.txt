@@ -19,7 +19,7 @@
  percent10: 62.5000
  quartile1: 75.0000
  median   : 85.0000
- mean     : 81.4323
+ mean     : NA
  quartile3: 92.5000
  percent90: 95.0000
  maximum  : 100.0000
@@ -30,7 +30,7 @@
  percent10: 70.0000
  quartile1: 80.5000
  median   : 95.0000
- mean     : 88.2341
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -41,7 +41,7 @@
  percent10: 77.5000
  quartile1: 87.5000
  median   : 95.0000
- mean     : 90.9997
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -52,7 +52,7 @@
  percent10: 60.5000
  quartile1: 77.5000
  median   : 90.0000
- mean     : 84.6026
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -63,7 +63,7 @@
  percent10: 76.7500
  quartile1: 90.0000
  median   : 96.2500
- mean     : 92.1270
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -74,7 +74,7 @@
  percent10: 72.0000
  quartile1: 86.0000
  median   : 94.0000
- mean     : 87.9904
+ mean     : NA
  quartile3: 99.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -85,7 +85,7 @@
  percent10: 65.0000
  quartile1: 80.6250
  median   : 92.0000
- mean     : 85.9183
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -96,7 +96,7 @@
  percent10: 68.0000
  quartile1: 80.0000
  median   : 90.0000
- mean     : 86.0815
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -107,7 +107,7 @@
  percent10: 70.0000
  quartile1: 80.0000
  median   : 90.0000
- mean     : 86.9022
+ mean     : NA
  quartile3: 100.0000
  percent90: 100.0000
  maximum  : 100.0000
@@ -129,7 +129,7 @@
  percent10: 6.0000
  quartile1: 8.0000
  median   : 10.0000
- mean     : 9.4535
+ mean     : NA
  quartile3: 11.0000
  percent90: 12.0000
  maximum  : 12.0000
@@ -140,7 +140,7 @@
  percent10: 7.0000
  quartile1: 10.0000
  median   : 13.0000
- mean     : 12.6192
+ mean     : NA
  quartile3: 16.0000
  percent90: 18.0000
  maximum  : 18.0000
@@ -151,7 +151,7 @@
  percent10: 7.0000
  quartile1: 11.0000
  median   : 14.0000
- mean     : 13.0701
+ mean     : NA
  quartile3: 16.0000
  percent90: 18.0000
  maximum  : 20.0000
@@ -162,7 +162,7 @@
  percent10: 10.0000
  quartile1: 14.0000
  median   : 17.0000
- mean     : 15.9714
+ mean     : NA
  quartile3: 19.0000
  percent90: 20.0000
  maximum  : 20.0000
