@@ -1,10 +1,8 @@
----
-title: "3D Scatterplots, Binning, and Interative Maps: Making Best Use of Diverse R Packages "
-author: "Hannah Kim"
-date: "November 24, 2017"
-output: github_document
----
-```{r, message = FALSE, warning = FALSE}
+# 3D Scatterplots, Binning, and Interative Maps: Making the Best Use of Diverse R Packages 
+Hannah Kim  
+November 24, 2017  
+
+```r
 # loading fundamental packages
 library(readr)
 library(scatterplot3d)
@@ -40,7 +38,8 @@ Let’s say that we want to plot automobile mileage vs. engine displacement vs. 
 `mpg` = miles per gallon
 `disp` = displacement
 `wt` = weight
-```{r}
+
+```r
 with(mtcars, {
    scatterplot3d(disp,   # x axis
                  wt,     # y axis
@@ -49,8 +48,11 @@ with(mtcars, {
 })
 ```
 
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
 Next, we can also modify the graph so that the points are now color coded, making the graph more visually appealing. In addition, we can add drop lines to the x-y plane, making it easier to read the data points.
-```{r}
+
+```r
 with(mtcars, {
    scatterplot3d(disp, wt, mpg,        
                  color = "red", pch=19,  # new red points
@@ -62,10 +64,13 @@ with(mtcars, {
 })
 ```
 
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 Now we can make the points more meaninful by adding labels to them. 
 
 You would want to save the results of the `scatterplot3d()` function to another variable, using `xyz.convert()` to convert the 3D (x, y, z) coordinates to 2D-projections (x, y). Then, we can use the `text()` function to add labels to the plot. 
-```{r}
+
+```r
 with(mtcars, {
    scatter3d <- scatterplot3d(disp, wt, mpg,        
                  color = "red", pch=19,         # new red points
@@ -81,8 +86,11 @@ with(mtcars, {
 })
 ```
 
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
 Finally, we can then now add information on the number of cylinders that each car has. We can add a column to the `mtcars` dataframe so that it indicates the color for each point. Then we'll scale the y-axis, change the drop lines to dotted lines, and add a legend, so that the visualization is easier to understand.
-```{r}
+
+```r
 # create column indicating point color
 mtcars$pcolor[mtcars$cyl == 4] <- "red"
 mtcars$pcolor[mtcars$cyl == 6] <- "blue"
@@ -111,6 +119,8 @@ legend("topleft", inset=.05,      # location and inset
 })
 ```
 
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 ### 2. Hexbin binning
 Binning is a technique of data aggregation used for grouping a dataset of N values into less than N discrete groups. There are many reasons for using hexagons instead of squares for binning a 2D surface as a plane. The most evident is that hexagons are more similar to circle than square. This translates in more efficient data aggregation around the bin center. This can be seen by looking at some particular properties of hexagons and, especially, of the hexagonal tessellation. [4] I received guidance through [this website](https://www.analyticsvidhya.com/blog/2015/07/guide-data-visualization-r/). [5]
 
@@ -120,31 +130,32 @@ We will use the [Forest Fires data set](http://archive.ics.uci.edu/ml/datasets/F
 
 Here are the following column labels of the data set:
 
-- 1. X: x-axis spatial coordinate within the Montesinho park map: 1 to 9 
-
-- 2. Y: y-axis spatial coordinate within the Montesinho park map: 2 to 9 
-
-- 3. month: month of the year: 'jan' to 'dec' 
-
-- 4. day: day of the week: 'mon' to 'sun'
-
-- 5. FFMC: Fine Fuel Moisture Code index from the Forest Fire Weather Index (FWI) system: 18.7 to 96.20 
-
-- 6. DMC: Duff Moisture Code index from the FWI system: 1.1 to 291.3 
-
-- 7. DC: Drought Code index from the FWI system: 7.9 to 860.6 
-
-- 8. ISI: Initial Spread Index from the FWI system: 0.0 to 56.10
-
-- 9. temp: temperature in Celsius degrees: 2.2 to 33.30 
-
-- 10. RH: relative humidity in %: 15.0 to 100 
-
-- 11. wind: wind speed in km/h: 0.40 to 9.40 
-
-- 12. rain: outside rain in mm/m2 : 0.0 to 6.4 
-
-- 13. area: the burned area of the forest (in ha): 0.00 to 1090.84 
+  1. X: x-axis spatial coordinate within the Montesinho park map: 1 to 9 
+  
+  2. Y: y-axis spatial coordinate within the Montesinho park map: 2 to 9 
+  
+  3. month: month of the year: 'jan' to 'dec' 
+  
+  4. day: day of the week: 'mon' to 'sun' 
+  
+  5. FFMC: Fine Fuel Moisture Code index from the Forest Fire Weather Index (FWI) system: 18.7 to 96.20 
+  
+  6. DMC: Duff Moisture Code index from the FWI system: 1.1 to 291.3 
+  
+  7. DC: Drought Code index from the FWI system: 7.9 to 860.6 
+  
+  8. ISI: Initial Spread Index from the FWI system: 0.0 to 56.10 
+  
+  9. temp: temperature in Celsius degrees: 2.2 to 33.30 
+  
+  10. RH: relative humidity in %: 15.0 to 100 
+  
+  11. wind: wind speed in km/h: 0.40 to 9.40 
+  
+  12. rain: outside rain in mm/m2 : 0.0 to 6.4 
+  
+  13. area: the burned area of the forest (in ha): 0.00 to 1090.84 
+  
 
 Term clarifications: 
 
@@ -156,12 +167,33 @@ Term clarifications:
 
 - *Initial Spread Index (ISI)*: Combines FFMC and wind speed; Varies greatly based on current wind conditions [7]
 
-```{r}
+
+```r
 # loading the forest fires data set and reading csv file
 forestfires <- read_csv("data/forestfires.csv")
-``` 
+```
 
-```{r}
+```
+## Parsed with column specification:
+## cols(
+##   X = col_integer(),
+##   Y = col_integer(),
+##   month = col_character(),
+##   day = col_character(),
+##   FFMC = col_double(),
+##   DMC = col_double(),
+##   DC = col_double(),
+##   ISI = col_double(),
+##   temp = col_double(),
+##   RH = col_integer(),
+##   wind = col_double(),
+##   rain = col_double(),
+##   area = col_double()
+## )
+```
+
+
+```r
 # Notice that we already loaded the hexbin package on the top of this document
 
 # set dataframe; ISI is the x coordinate and temp is the y coordinate
@@ -174,18 +206,32 @@ library(RColorBrewer)
 plot(ISI_temp)
 ```
 
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
 Now, we use`colorRampPalette()` to add color onto the hexbin plot.
-```{r}
+
+```r
 # adding color 
 rf <- colorRampPalette(rev(brewer.pal(30,'Set1')))
+```
+
+```
+## Warning in brewer.pal(30, "Set1"): n too large, allowed maximum for palette Set1 is 9
+## Returning the palette you asked for with that many colors
+```
+
+```r
 hexbinplot(forestfires$ISI~forestfires$temp, data = forestfires, colramp = rf)
-``` 
+```
+
+![](post02-hannah-kim_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
   
 ### 3. Map Visualizations
 **Map Visualizations** are used to pinpoint certain areas on a map from Geographic Information Systems (GIS) data. Mapping, charting, and visualization are three components of production mapping. Production mapping refers to a repeatable and automated process of producing maps and charts of GIS data. [8] Specifically in this example, we will be using the package called `leaflet`. Leaflet is one of the most popular open-source Javascript libraries for interactive maps! The source that I used for this graph is also [this source](https://www.analyticsvidhya.com/blog/2015/07/guide-data-visualization-r/).
 
 You can see through the code that generating this type of visualization is actually rather simple. That's what makes leaflet so much more efficient than utilizing other complicated interactive maps.
-```{r}
+
+```r
 # we already loaded the leaflet package on the top of the file
 
 map_viz <- leaflet() %>%
@@ -197,6 +243,9 @@ addMarkers(lng = 174.768, lat = -36.852, popup = "The birthplace of R")
 # print map
 map_viz  
 ```
+
+<!--html_preserve--><div id="htmlwidget-58e26abefe313ee9fde6" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-58e26abefe313ee9fde6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,null,null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 ## Discussion
 

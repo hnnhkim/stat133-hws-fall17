@@ -2,7 +2,9 @@
 title: "3D Scatterplots, Binning, and Interative Maps: Making the Best Use of Diverse R Packages "
 author: "Hannah Kim"
 date: "November 24, 2017"
-output: html_document
+output: 
+  html_document:
+    keep_md: TRUE
 ---
 ```{r, message = FALSE, warning = FALSE}
 # loading fundamental packages
@@ -120,19 +122,32 @@ We will use the [Forest Fires data set](http://archive.ics.uci.edu/ml/datasets/F
 
 Here are the following column labels of the data set:
 
-> <font size = "2"> 1. X: x-axis spatial coordinate within the Montesinho park map: 1 to 9 <br>
-  2. Y: y-axis spatial coordinate within the Montesinho park map: 2 to 9 <br>
-  3. month: month of the year: 'jan' to 'dec' <br>
-  4. day: day of the week: 'mon' to 'sun' <br>
-  5. FFMC: Fine Fuel Moisture Code index from the Forest Fire Weather Index (FWI) system: 18.7 to 96.20 <br>
-  6. DMC: Duff Moisture Code index from the FWI system: 1.1 to 291.3 <br>
-  7. DC: Drought Code index from the FWI system: 7.9 to 860.6 <br>
-  8. ISI: Initial Spread Index from the FWI system: 0.0 to 56.10 <br>
-  9. temp: temperature in Celsius degrees: 2.2 to 33.30 <br>
-  10. RH: relative humidity in %: 15.0 to 100 <br>
-  11. wind: wind speed in km/h: 0.40 to 9.40 <br>
-  12. rain: outside rain in mm/m2 : 0.0 to 6.4 <br>
-  13. area: the burned area of the forest (in ha): 0.00 to 1090.84 </font>
+  1. X: x-axis spatial coordinate within the Montesinho park map: 1 to 9 
+  
+  2. Y: y-axis spatial coordinate within the Montesinho park map: 2 to 9 
+  
+  3. month: month of the year: 'jan' to 'dec' 
+  
+  4. day: day of the week: 'mon' to 'sun' 
+  
+  5. FFMC: Fine Fuel Moisture Code index from the Forest Fire Weather Index (FWI) system: 18.7 to 96.20 
+  
+  6. DMC: Duff Moisture Code index from the FWI system: 1.1 to 291.3 
+  
+  7. DC: Drought Code index from the FWI system: 7.9 to 860.6 
+  
+  8. ISI: Initial Spread Index from the FWI system: 0.0 to 56.10 
+  
+  9. temp: temperature in Celsius degrees: 2.2 to 33.30 
+  
+  10. RH: relative humidity in %: 15.0 to 100 
+  
+  11. wind: wind speed in km/h: 0.40 to 9.40 
+  
+  12. rain: outside rain in mm/m2 : 0.0 to 6.4 
+  
+  13. area: the burned area of the forest (in ha): 0.00 to 1090.84 
+  
 
 Term clarifications: 
 
