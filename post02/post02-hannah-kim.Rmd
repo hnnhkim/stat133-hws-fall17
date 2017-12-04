@@ -12,6 +12,7 @@ library(readr)
 library(scatterplot3d)
 library(hexbin)
 library(leaflet)
+library(dplyr)
 ```
 
 ## Introduction & Motivation
